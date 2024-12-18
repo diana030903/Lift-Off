@@ -15,6 +15,7 @@ const App = () => {
   return (
     <Router>
       <div className="flex bg-[#181825] dark:bg-[#f5f5f5]">
+        <ThemeToggle />
         <Sidebar />
         <div className="flex flex-col w-full">
           <Header />
@@ -25,7 +26,6 @@ const App = () => {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/profile" element={<Profile />} />
           </Routes>
-          <ThemeToggle />
         </div>
       </div>
     </Router>

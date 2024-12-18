@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import { FaSun, FaMoon } from "react-icons/fa"; // Используем иконки солнца и луны
 
 const ThemeToggle = () => {
-  // Состояние для темы: 'light' или 'dark'
-  const [theme, setTheme] = useState(
-    localStorage.getItem("theme") || "dark" // Получаем тему из localStorage
-  );
+  const [theme, setTheme] = useState(() => {
+    if (localStorage.getItem("theme")) {
+      return localStorage.getItem("theme");
+    }
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  });
 
   // Эффект для применения класса 'dark' к <html>
   useEffect(() => {
