@@ -1,7 +1,40 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const SignUp = () => {
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+  username: "",
+  email: "",
+  password: "",
+  confirmPassword: ""
+});
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords don't match");
+      return;
+    }
+
+    localStorage.setItem("user", JSON.stringify({
+      username: formData.username,
+      email: formData.email,
+      isAuthenticated: true
+    }));
+
+    navigate("/profile");
+  };
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.id]: e.target.value
+    });
+  };
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#181825]">
       <div className="bg-[#1e1e2e] p-8 rounded-lg shadow-xl w-full max-w-md">
@@ -15,7 +48,18 @@ const SignUp = () => {
           Sign up
         </h2>
         
-        <form className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">         
+         <div>
+            <label className="block text-gray-400 mb-2" htmlFor="username">
+              Username
+            </label>
+            <input
+              id="username"
+              type="text"
+              className="w-full bg-[#14141c] text-gray-400 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#00df9a]"
+              placeholder="Enter username"
+            />
+          </div>
           <div>
             <label className="block text-gray-400 mb-2" htmlFor="email">
               Email

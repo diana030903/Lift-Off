@@ -9,6 +9,7 @@ import SignIn from "./pages/SignIn";
 import Projects from "./pages/Projects";
 import Home from "./pages/Home";
 import SignUp from "./pages/SignUp";
+import Profile from "./pages/Profile";
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
             <Route path="/signin" element={<SignIn />} />
             <Route path="/projects" element={<Projects />} /> 
             <Route path="/signup" element={<SignUp />} />
+            <Route path="/profile" element={<Profile />} />
           </Routes>
           <ThemeToggle />
         </div>

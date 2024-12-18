@@ -1,10 +1,11 @@
-
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
+import search from "../assets/search.svg";
 
 const Header = () => {
   const location = useLocation();
   const isAuthPage = location.pathname === "/signin" || location.pathname === "/signup";
+  const isAuthenticated = false;
   
   // const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   // const toggleDropdown = () => {
@@ -30,31 +31,29 @@ const Header = () => {
           className="w-full bg-[#14141c] text-gray-400 rounded-full px-6 py-3 focus:outline-none focus:ring-2 focus:ring-green-500 transition-all duration-300"
         />
         {/* Кнопка с лупой */}
-        <button className="absolute right-1 bg-[#00df9a] hover:bg-green-600 text-white rounded-full p-3 transition-all duration-300 ">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={2}
-            stroke="currentColor"
-            className="w-5 h-5"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1010.5 3a7.5 7.5 0 006.15 12.65z"
-            />
-          </svg>
+        <button
+        className="absolute right-1 w-[40px] h-[40px] rounded-full bg-[#4acd8d] flex justify-center
+             items-center cursor-pointer z-10 hover:bg-green-600 transition-all duration-300"
+        id="searchbutton">
+        <img
+        src={search} 
+        alt="search"
+        className="w-[15px] h-[15px] object-contain"/>
         </button>
       </div>
-
-      {!isAuthPage &&(
-      <Link to="/signin" className="ml-auto">
-        <button className="btn-success rounded-full px-6 py-3 bg-[#00df9a]">
-            Sign In
-        </button>
-      </Link>
-      )}
+        {isAuthenticated ? (
+          <Link to="/profile" className="ml-auto">
+            <button className="btn-success">Profile</button>
+          </Link>
+          ) : (
+            !isAuthPage && (
+            <Link to="/signin" className="ml-auto">
+              <button className="btn-success text-white rounded-full px-6 py-3 bg-[#00df9a]">
+                Sign In
+              </button>
+            </Link>
+  )
+)}
     </header>
   );
 };
