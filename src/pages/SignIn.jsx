@@ -25,18 +25,18 @@ const SignIn = () => {
     }
 
     const storedUser = JSON.parse(localStorage.getItem("user"));
-    if (
-      storedUser &&
-      storedUser.email === formData.email &&
-      storedUser.isAuthenticated
-    ) {
-      if (formData.password === "password123") {
-        navigate("/profile");
+
+    if (storedUser) {
+      if (
+        storedUser.email === formData.email &&
+        storedUser.password === formData.password
+      ) {
+        navigate("/profile")
       } else {
-        setError("Incorrect password.");
+        setError("Incorrect email or password.");
       }
     } else {
-      setError("User not found. Please sign up first.");
+      setError("User no found. Please sign up first");
     }
   };
 
@@ -53,9 +53,7 @@ const SignIn = () => {
           Sign in
         </h2>
 
-        {error && (
-          <p className="text-red-500 text-center mb-4">{error}</p>
-        )}
+        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>

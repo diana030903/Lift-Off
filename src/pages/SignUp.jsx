@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { saveToLocalStorage } from "../utils/localStorage";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -11,31 +12,35 @@ const SignUp = () => {
     password: "",
     confirmPassword: ""
   });
+  const [error, setError] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (!formData.username || !formData.email || !formData.password || !formData.confirmPassword) {
-      alert("Please fill out all fields.");
+      setError("Please fill out all fields.");
       return;
     }
 
     const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
     if (!emailRegex.test(formData.email)) {
-      alert("Please enter a valid email address.");
+      setError("Please enter a valid email address.");
       return;
     }
 
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords don't match");
+      setError("Passwords don't match");
       return;
     }
 
-    localStorage.setItem("user", JSON.stringify({
+    const user = {
       username: formData.username,
       email: formData.email,
+      password: formData.password,
+      confirmPassword: formData.confirmPassword,
       isAuthenticated: true
-    }));
+    };
+    saveToLocalStorage("user", user);
 
     navigate("/profile");
   };
@@ -59,6 +64,11 @@ const SignUp = () => {
         <h2 className="text-2xl font-bold text-white mb-6 text-center">
           Sign up
         </h2>
+
+        {error && (
+          <p className="text-red-500 text-center mb-4">{error}</p>
+        )
+}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>

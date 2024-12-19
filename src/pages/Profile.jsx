@@ -1,57 +1,74 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
-
 
 const Profile = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('profile');
   const [user, setUser] = useState({
-    username: 'Username',
-    email: 'user@example.com',
-    avatar: '/assets/avatar.png'
+    username: '',
+    email: '',
+    avatar: '/assets/avatar.jpg',
   });
 
-const handleAvatarUpload = async (e) => {
-  const file = e.target.files[0];
-  // Здесь должна быть логика загрузки файла на сервер
-  // После успешной загрузки:
-  const userData = JSON.parse(localStorage.getItem('user'));
-  userData.avatar = URL.createObjectURL(file); // Временное решение
-  localStorage.setItem('user', JSON.stringify(userData));
-  setUser({...user, avatar: userData.avatar});
-};
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+    if (storedUser) {
+      setUser(storedUser);
+    } else {
+      navigate('/signin');
+    }
+  }, [navigate]);
 
-  const userProjects = []; // Здесь будут проекты пользователя из API/Redux
+  const handleAvatarUpload = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const newAvatar = URL.createObjectURL(file);
+
+      const updatedUser = { ...user, avatar: newAvatar };
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+      setUser(updatedUser);
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    navigate('/signin');
+  };
+
+  const userProjects = []; 
 
   return (
     <div className="min-h-screen p-6 bg-[#1e1e2e] text-white">
       <div className="tabs tabs-boxed mb-6">
-        <button 
+        <button
           className={`tab ${activeTab === 'profile' ? 'tab-active' : ''}`}
-          onClick={() => setActiveTab('profile')}>
+          onClick={() => setActiveTab('profile')}
+        >
           Profile
         </button>
-        <button 
+        <button
           className={`tab ${activeTab === 'projects' ? 'tab-active' : ''}`}
-          onClick={() => setActiveTab('projects')}>
+          onClick={() => setActiveTab('projects')}
+        >
           My projects
         </button>
-        <button 
+        <button
           className={`tab ${activeTab === 'history' ? 'tab-active' : ''}`}
-          onClick={() => setActiveTab('history')}>
-          Withdrawals 
+          onClick={() => setActiveTab('history')}
+        >
+          Withdrawals
         </button>
-        <button 
+        <button
           className={`tab ${activeTab === 'settings' ? 'tab-active' : ''}`}
-          onClick={() => setActiveTab('settings')}>
+          onClick={() => setActiveTab('settings')}
+        >
           Settings
         </button>
       </div>
 
       {activeTab === 'profile' && (
         <div className="profile-info">
-          <img src={user.avatar} alt="Avatar" className="w-24 h-24 rounded-full mb-4"/>
+          <img src={user.avatar} alt="Avatar" className="w-24 h-24 rounded-full mb-4" />
           <h2 className="text-xl mb-2">Username: {user.username}</h2>
           <p>Email: {user.email}</p>
         </div>
@@ -60,9 +77,8 @@ const handleAvatarUpload = async (e) => {
       {activeTab === 'projects' && (
         <div className="projects-list">
           {userProjects.length > 0 ? (
-            userProjects.map(project => (
+            userProjects.map((project) => (
               <div key={project.id} className="project-card">
-                {/* Project card component */}
               </div>
             ))
           ) : (
@@ -75,7 +91,7 @@ const handleAvatarUpload = async (e) => {
         <div className="settings-form space-y-4">
           <div>
             <label className="block text-gray-400 mb-2">Change username</label>
-            <input 
+            <input
               type="text"
               className="w-full bg-[#14141c] text-gray-400 rounded-lg px-4 py-3"
               placeholder="New username"
@@ -83,23 +99,31 @@ const handleAvatarUpload = async (e) => {
           </div>
           <div>
             <label className="block text-gray-400 mb-2">Upload avatar</label>
-            <input 
+            <input
               type="file"
+              onChange={handleAvatarUpload}
               className="w-full bg-[#14141c] text-gray-400 rounded-lg px-4 py-3"
             />
           </div>
           <div>
             <label className="block text-gray-400 mb-2">Bank card details</label>
-            <input 
+            <input
               type="text"
               className="w-full bg-[#14141c] text-gray-400 rounded-lg px-4 py-3"
               placeholder="Номер карты"
             />
           </div>
           <button className="btn btn-success bg-[#00df9a]">Save changes</button>
+          <button onClick={handleLogout} className="btn btn-error mt-6">
+            Exit
+          </button>
         </div>
       )}
-      <button className="btn btn-error mt-6">Exit</button>
+
+      {activeTab !== 'settings' && (
+        <div className="hidden">
+        </div>
+      )}
     </div>
   );
 };
