@@ -31,7 +31,7 @@ const Home = () => {
         </div>
       </main>
       <h1 className="text-2xl font-bold text-white dark:text-black mb-5 ml-12">
-        Projects ({projects.length})
+        Projects 
       </h1>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 ml-12">
         {projects.map((project) => (

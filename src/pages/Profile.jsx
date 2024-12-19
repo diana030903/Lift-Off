@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
@@ -9,8 +9,18 @@ const Profile = () => {
   const [user, setUser] = useState({
     username: 'Username',
     email: 'user@example.com',
-    avatar: '/assets/default-avatar.png'
+    avatar: '/assets/avatar.png'
   });
+
+const handleAvatarUpload = async (e) => {
+  const file = e.target.files[0];
+  // Здесь должна быть логика загрузки файла на сервер
+  // После успешной загрузки:
+  const userData = JSON.parse(localStorage.getItem('user'));
+  userData.avatar = URL.createObjectURL(file); // Временное решение
+  localStorage.setItem('user', JSON.stringify(userData));
+  setUser({...user, avatar: userData.avatar});
+};
 
   const userProjects = []; // Здесь будут проекты пользователя из API/Redux
 
@@ -89,7 +99,6 @@ const Profile = () => {
           <button className="btn btn-success bg-[#00df9a]">Save changes</button>
         </div>
       )}
-
       <button className="btn btn-error mt-6">Exit</button>
     </div>
   );
