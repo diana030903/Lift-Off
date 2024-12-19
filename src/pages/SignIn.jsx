@@ -41,8 +41,8 @@ const SignIn = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#181825]">
-      <div className="bg-[#1e1e2e] p-8 rounded-lg shadow-xl w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center bg-[#181825] ">
+      <div className="bg-[#1e1e2e] p-8 rounded-[10%] shadow-xl w-full max-w-md">
         <div className="flex justify-center mb-6">
           <Link to="/">
             <img src="liftoff.png" alt="LiftOff Logo" className="h-12 w-auto" />

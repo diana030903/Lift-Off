@@ -53,15 +53,15 @@ const SignUp = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#181825]">
-      <div className="bg-[#1e1e2e] p-8 rounded-lg shadow-xl w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center bg-[#181825] bg-[#181822] dark:bg-[#f5f5f5] text-white dark:text-black relative">
+      <div className="bg-[#1e1e2e] p-8 rounded-[10%] shadow-xl w-full max-w-md bg-[#181822] dark:bg-[#f5f5f5] text-white dark:text-black ">
         <div className="flex justify-center mb-6">
           <Link to="/">
             <img src="liftoff.png" alt="LiftOff Logo" className="h-12 w-auto" />
           </Link>
         </div>
 
-        <h2 className="text-2xl font-bold text-white mb-6 text-center">
+        <h2 className="text-2xl font-bold text-white mb-6 text-center bg-[#181822] dark:bg-[#f5f5f5] text-white dark:text-black relative">
           Sign up
         </h2>
 
@@ -72,7 +72,7 @@ const SignUp = () => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-gray-400 mb-2" htmlFor="username">
+            <label className="block text-gray-400 mb-2  " htmlFor="username ">
               Username
             </label>
             <input
@@ -80,7 +80,7 @@ const SignUp = () => {
               type="text"
               value={formData.username}
               onChange={handleChange}
-              className="w-full bg-[#14141c] text-gray-400 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#00df9a]"
+              className="w-full bg-[#14141c] text-gray-400 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#00df9a] bg-[#181822] dark:bg-[#f5f5f5] text-white dark:text-black relative"
               placeholder="Enter username"
             />
           </div>
@@ -93,7 +93,7 @@ const SignUp = () => {
               type="email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full bg-[#14141c] text-gray-400 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#00df9a]"
+              className="w-full bg-[#14141c] text-gray-400 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#00df9a] bg-[#181822] dark:bg-[#f5f5f5] text-white dark:text-black relative"
               placeholder="Enter email"
             />
           </div>
@@ -107,7 +107,7 @@ const SignUp = () => {
               type="password"
               value={formData.password}
               onChange={handleChange}
-              className="w-full bg-[#14141c] text-gray-400 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#00df9a]"
+              className="w-full bg-[#14141c] text-gray-400 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#00df9a] bg-[#181822] dark:bg-[#f5f5f5] text-white dark:text-black relative"
               placeholder="Enter password"
             />
           </div>
@@ -121,7 +121,7 @@ const SignUp = () => {
               type="password"
               value={formData.confirmPassword}
               onChange={handleChange}
-              className="w-full bg-[#14141c] text-gray-400 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#00df9a]"
+              className="w-full bg-[#14141c] text-gray-400 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#00df9a] bg-[#181822] dark:bg-[#f5f5f5] text-white dark:text-black relative"
               placeholder="Confirm password"
             />
           </div>

@@ -88,38 +88,32 @@ const Profile = () => {
       )}
 
       {activeTab === 'settings' && (
-        <div className="settings-form space-y-4">
+        <div className="settings-form space-y-5">
           <div>
             <label className="block text-gray-400 mb-2">Change username</label>
-            <input
-              type="text"
-              className="w-full bg-[#14141c] text-gray-400 rounded-lg px-4 py-3"
-              placeholder="New username"
+            <input type="text" className="w-full bg-[#14141c] text-gray-400 rounded-lg px-4 py-3" placeholder="New username"
             />
           </div>
           <div>
             <label className="block text-gray-400 mb-2">Upload avatar</label>
-            <input
-              type="file"
-              onChange={handleAvatarUpload}
-              className="w-full bg-[#14141c] text-gray-400 rounded-lg px-4 py-3"
+            <input type="file" onChange={handleAvatarUpload}className="w-full bg-[#14141c] text-gray-400 rounded-lg px-4 py-3"
             />
           </div>
           <div>
             <label className="block text-gray-400 mb-2">Bank card details</label>
-            <input
-              type="text"
-              className="w-full bg-[#14141c] text-gray-400 rounded-lg px-4 py-3"
-              placeholder="Номер карты"
+            <input type="text" className="w-1/3 bg-[#14141c] text-gray-400 rounded-lg px-4 py-3" placeholder="Card Number"
             />
-          </div>
-          <button className="btn btn-success bg-[#00df9a]">Save changes</button>
-          <button onClick={handleLogout} className="btn btn-error mt-6">
-            Exit
+              <input type="text"className="w-1/3 bg-[#14141c] text-gray-400 rounded-lg px-4 py-3" placeholder="MM/YY"
+              />            
+              <input type="text" className="w-1/3 bg-[#14141c]  text-gray-400 rounded-lg px-4 py-3" placeholder="CVC"
+              />          
+              </div>
+              <button className="btn btn-success mt-6 rounded-full bg-[#00df9a]">Save changes</button>
+              <button onClick={handleLogout} className="btn btn-error mt-6 w-20 rounded-full ml-10">
+                Exit
           </button>
         </div>
       )}
-
       {activeTab !== 'settings' && (
         <div className="hidden">
         </div>

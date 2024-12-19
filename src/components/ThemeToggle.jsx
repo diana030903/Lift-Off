@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FaSun, FaMoon } from "react-icons/fa"; // Используем иконки солнца и луны
+import { FaSun, FaMoon } from "react-icons/fa";
 
 const ThemeToggle = () => {
   const [theme, setTheme] = useState(() => {
@@ -9,17 +9,16 @@ const ThemeToggle = () => {
     return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
   });
 
-  // Эффект для применения класса 'dark' к <html>
   useEffect(() => {
     if (theme === "dark") {
       document.documentElement.classList.add("dark");
     } else {
       document.documentElement.classList.remove("dark");
     }
-    localStorage.setItem("theme", theme); // Сохраняем тему в localStorage
+    
+    localStorage.setItem("theme", theme); 
   }, [theme]);
 
-  // Функция для переключения темы
   const toggleTheme = () => {
     setTheme((prevTheme) => (prevTheme === "dark" ? "light" : "dark"));
   };

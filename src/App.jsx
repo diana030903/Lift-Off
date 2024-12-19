@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
@@ -12,6 +12,14 @@ import SignUp from "./pages/SignUp";
 import Profile from "./pages/Profile";
 
 const App = () => {
+  useEffect(() => {
+    const theme = localStorage.getItem("theme");
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, []);
   return (
     <Router>
       <div className="flex bg-[#181825] dark:bg-[#f5f5f5]">
