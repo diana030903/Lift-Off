@@ -61,7 +61,7 @@ const SignUp = () => {
           </Link>
         </div>
 
-        <h2 className="text-2xl font-bold text-white mb-6 text-center bg-[#181822] dark:bg-[#f5f5f5] text-white dark:text-black relative">
+        <h2 className="text-2xl font-bold text-white mb-6 text-center text-white dark:text-black relative">
           Sign up
         </h2>
 

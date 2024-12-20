@@ -2,9 +2,9 @@ import React from "react";
 
 const Sidebar = () => {
   return (
-    <ul className="menu bg-[#181822] dark:bg-[#f5f5f5] rounded-box">
+    <ul className="menu bg-[#181822] dark:bg-[#f5f5f5] rounded-box  ">
       <li>
-        <a className="tooltip tooltip-right" data-tip="Home">
+        <a className="tooltip tooltip-right " data-tip="Home">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-5 w-5"

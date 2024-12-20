@@ -41,15 +41,15 @@ const SignIn = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#181825] ">
-      <div className="bg-[#1e1e2e] p-8 rounded-[10%] shadow-xl w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center bg-[#181825] dark:bg-[#f5f5f5] text-white dark:text-black relative">
+      <div className="bg-[#1e1e2e] p-8 rounded-[10%] shadow-xl w-full max-w-md bg-[#181822] dark:bg-[#f5f5f5] text-white dark:text-black relative">
         <div className="flex justify-center mb-6">
           <Link to="/">
             <img src="liftoff.png" alt="LiftOff Logo" className="h-12 w-auto" />
           </Link>
         </div>
 
-        <h2 className="text-2xl font-bold text-white mb-6 text-center">
+        <h2 className="text-2xl font-bold text-white mb-6 text-center text-white dark:text-black relative">
           Sign in
         </h2>
 
@@ -65,7 +65,7 @@ const SignIn = () => {
               type="email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full bg-[#14141c] text-gray-400 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#00df9a]"
+              className="w-full bg-[#14141c] text-gray-400 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#00df9a] bg-[#181822] dark:bg-[#f5f5f5] text-white dark:text-black relative"
               placeholder="Enter email"
             />
           </div>
@@ -79,7 +79,7 @@ const SignIn = () => {
               type="password"
               value={formData.password}
               onChange={handleChange}
-              className="w-full bg-[#14141c] text-gray-400 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#00df9a]"
+              className="w-full bg-[#14141c] text-gray-400 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#00df9a] bg-[#181822] dark:bg-[#f5f5f5] text-white dark:text-black relative"
               placeholder="Enter password"
             />
           </div>

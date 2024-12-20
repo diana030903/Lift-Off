@@ -58,7 +58,7 @@ const Header = () => {
       ) : (
         !isAuthPage && (
           <Link to="/signin" className="ml-auto">
-            <button className="btn-success text-white rounded-full px-6 py-3 bg-[#00df9a]">
+            <button className="btn-success text-white rounded-full px-6 py-3 bg-[#00df9a] ">
               Sign In
             </button>
           </Link>
