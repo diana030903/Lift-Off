@@ -9,7 +9,29 @@ const Profile = () => {
     username: '',
     email: '',
     avatar: '/assets/avatar.jpg',
+    bankDetails: {
+      cardNumber: '',
+      expiryDate: '',
+      cvc: '',
+    }
   });
+
+  const [newUsername, setNewUsername] = useState(user.username);
+
+  const handleBankDetailsChange = (e) => {
+    setUser(prev => {
+      const updatedUser = {
+        ...prev,
+        bankDetails: {
+          ...prev.bankDetails,
+          [e.target.name]: e.target.value
+        }
+      };
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+      return updatedUser;
+    });
+  };  
+  
   const [userProjects, setUserProjects] = useState([]);
   const [formData, setFormData] = useState({
     title: '',
@@ -24,6 +46,7 @@ const Profile = () => {
     const storedUser = JSON.parse(localStorage.getItem('user'));
     if (storedUser) {
       setUser((storedUser))
+      setNewUsername(storedUser.username);
     } else {
       navigate('/signin');
     }
@@ -86,8 +109,6 @@ const Profile = () => {
     });
   };
 
-
-
   const handleEditProject = (project) => {
     setEditingProject(project); 
     setFormData({
@@ -105,6 +126,12 @@ const Profile = () => {
       prevProjects.filter((project) => project.id !== projectId)
     )
   };
+
+  const handleSaveChanges = () => {
+    const updatedUser = { ...user, username: newUsername };
+    setUser(updatedUser);
+    localStorage.setItem('user', JSON.stringify(updatedUser));
+  }
 
   return (
     <div className="min-h-screen p-6 dark:bg-[#f5f5f5] text-white bg-[#181821] dark:bg-[#f5f5f5] text-white dark:text-black relative">
@@ -137,11 +164,18 @@ const Profile = () => {
 
       {activeTab === 'profile' && (
         <div className="profile-info">
-          <img src={user.avatar || '/assets/avatar.jpg'} alt="Avatar" className="w-24 h-24 rounded-full mb-4 " />
+          <img src={user.avatar || '/assets/avatar.jpg'} alt="Avatar" className="w-24 h-24 rounded-full mb-4" />
           <h2 className="text-xl mb-2">Username: {user.username}</h2>
-          <p>Email: {user.email}</p>
+            <p>Email: {user.email}</p>
+            {user.bankDetails && (
+            <div className="mt-4">
+            <h3 className="text-lg mb-2">Bank Details:</h3>
+            <p>Card Number: {user.bankDetails.cardNumber}</p>
+            <p>Expiry Date: {user.bankDetails.expiryDate}</p>
         </div>
       )}
+    </div>
+  )}
 
       {activeTab === 'projects' && (
         <div className="projects-list">
@@ -227,20 +261,45 @@ const Profile = () => {
         <div className="settings-form space-y-6">
           <div>
             <label className="block text-gray-400 mb-2 text-white dark:text-black relative">Change username</label>
-            <input type="text" className="w-full bg-[#14141c] text-gray-400 rounded-lg px-4 py-3 bg-[#181822] dark:bg-[#f5f5f5] text-white dark:text-black relative shadow dark:shadow-lg transition-shadow" placeholder="New username"
+            <input
+              type="text"
+              value={newUsername}
+              onChange={(e) => setNewUsername(e.target.value)}
+              className="w-full bg-[#14141c] text-gray-400 rounded-lg px-4 py-3 bg-[#181822] dark:bg-[#f5f5f5] text-white dark:text-black relative shadow dark:shadow-lg transition-shadow"
+              placeholder="New username"
             />
           </div>
           <div>
             <label className="block text-gray-400 mb-2 text-white dark:text-black relative">Upload avatar</label>
-            <input type="file" onChange={handleAvatarUpload} className="w-full bg-[#14141c] text-gray-400 rounded-lg px-4 py-3 bg-[#181822] dark:bg-[#f5f5f5] text-white dark:text-black relative shadow dark:shadow-lg transition-shadow" />
+            <input 
+            type="file" 
+            onChange={handleAvatarUpload} 
+            className="w-full bg-[#14141c] text-gray-400 rounded-lg px-4 py-3 bg-[#181822] dark:bg-[#f5f5f5] text-white dark:text-black relative shadow dark:shadow-lg transition-shadow" />
           </div>
-          <div>
-            <label className="block text-gray-400 mb-2 text-white dark:text-black relative ">Bank card details</label>
-            <input type="text" className="w-1/3 bg-[#14141c] text-gray-400 rounded-lg px-4 py-3 bg-[#181822] dark:bg-[#f5f5f5] text-white dark:text-black relative shadow dark:shadow-lg transition-shadow" placeholder="Card Number" />
-            <input type="text" className="w-1/4 bg-[#14141c] text-gray-400 rounded-lg px-4 py-3 ml-5 bg-[#181822] dark:bg-[#f5f5f5] text-white dark:text-black relative shadow dark:shadow-lg transition-shadow" placeholder="MM/YY" />
-            <input type="text" className="w-1/4 bg-[#14141c] text-gray-400 rounded-lg px-4 py-3 ml-5 bg-[#181822] dark:bg-[#f5f5f5] text-white dark:text-black relative shadow dark:shadow-lg transition-shadow" placeholder="CVC" />
-          </div>
-          <button className="btn btn-success mt-6 rounded-full bg-[#00df9a] text-white dark:text-white relative">Save changes</button>
+        <div>
+          <label className="block text-gray-400 mb-2 text-white dark:text-black relative">Bank card details</label>
+          <input 
+            type="text" 
+            name="cardNumber" 
+            value={user.bankDetails?.cardNumber || ''} 
+            onChange={handleBankDetailsChange} 
+            className="w-1/3 bg-[#14141c] text-gray-400 rounded-lg px-4 py-3 bg-[#181822] dark:bg-[#f5f5f5] text-white dark:text-black relative shadow dark:shadow-lg transition-shadow" 
+            placeholder="Card Number" />
+          <input 
+            type="text" 
+            name="expiryDate" 
+            value={user.bankDetails?.expiryDate || ''} 
+            onChange={handleBankDetailsChange} 
+            className="w-1/4 bg-[#14141c] text-gray-400 rounded-lg px-4 py-3 ml-5 bg-[#181822] dark:bg-[#f5f5f5] text-white dark:text-black relative shadow dark:shadow-lg transition-shadow" 
+            placeholder="MM/YY" />
+          <input 
+            type="text" 
+            name="cvc" 
+            value={user.bankDetails?.cvc || ''} 
+            onChange={handleBankDetailsChange} 
+            className="w-1/4 bg-[#14141c] text-gray-400 rounded-lg px-4 py-3 ml-5 bg-[#181822] dark:bg-[#f5f5f5] text-white dark:text-black relative shadow dark:shadow-lg transition-shadow" 
+            placeholder="CVC" /> </div>
+          <button onClick={handleSaveChanges} className="btn btn-success mt-6 rounded-full bg-[#00df9a] text-white dark:text-white relative">Save changes</button>
           <button onClick={handleLogout} className="btn btn-error mt-6 w-20 rounded-full ml-10 text-white dark:text-white relative">
             Exit
           </button>
