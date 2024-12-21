@@ -23,7 +23,7 @@ const Profile = () => {
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem('user'));
     if (storedUser) {
-      setUser(storedUser);
+      setUser((storedUser))
     } else {
       navigate('/signin');
     }
@@ -137,7 +137,7 @@ const Profile = () => {
 
       {activeTab === 'profile' && (
         <div className="profile-info">
-          <img src={user.avatar} alt="Avatar" className="w-24 h-24 rounded-full mb-4 " />
+          <img src={user.avatar || '/assets/avatar.jpg'} alt="Avatar" className="w-24 h-24 rounded-full mb-4 " />
           <h2 className="text-xl mb-2">Username: {user.username}</h2>
           <p>Email: {user.email}</p>
         </div>

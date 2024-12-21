@@ -3,12 +3,15 @@ import { Link, useLocation } from "react-router-dom";
 import search from "../assets/search.svg";
 import avatar from "../assets/avatar.jpg";
 
-const Header = () => {
+const Header = ({ searchQuery, setSearchQuery}) => {
   const location = useLocation();
   const isAuthPage = location.pathname === "/signin" || location.pathname === "/signup";
   const isHomePage = location.pathname === "/"
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userAvatar, setUserAvatar] = useState(avatar);
+  const handleSearhChange = (e) => {
+    setSearchQuery(e.target.value);
+  }
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -31,6 +34,8 @@ const Header = () => {
       <div className="absolute left-1/2 transform -translate-x-1/2 w-full max-w-2xl flex items-center">
         <input
           type="text"
+          value={searchQuery}
+          onChange={handleSearhChange}
           placeholder="Search for projects"
           className="w-full bg-[#14141c] text-gray-400 dark:bg-[#2c2c3c] rounded-full px-6 py-3 focus:outline-none focus:ring-2 focus:ring-green-700 transition-all duration-300 "
         />
