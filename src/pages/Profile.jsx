@@ -17,6 +17,12 @@ const Profile = () => {
   });
 
   const [newUsername, setNewUsername] = useState(user.username);
+  const [errors, setErrors] = useState({
+    email: '',
+    bankNumber: '',
+    expiryDate: '',
+    cvv: ''
+  })
 
   const handleBankDetailsChange = (e) => {
     setUser(prev => {
@@ -30,6 +36,11 @@ const Profile = () => {
       localStorage.setItem('user', JSON.stringify(updatedUser));
       return updatedUser;
     });
+
+    if (e.type === "blur") {
+      e.target.value = '';
+    }
+
   };  
   
   const [userProjects, setUserProjects] = useState([]);
@@ -133,6 +144,52 @@ const Profile = () => {
     localStorage.setItem('user', JSON.stringify(updatedUser));
   }
 
+  const handleEmailChange = (e) => {
+    const value = e.target.value;
+    setUser(prev => ({ ...prev, email: value }));
+    const emailError = validateEmail(value);
+    setErrors(prev => ({ ...prev, email: emailError }));
+  };
+  
+  const handleBankNumberChange = (e) => {
+    const value = e.target.value;
+    setUser(prev => ({
+      ...prev,
+      bankDetails: {
+        ...prev.bankDetails,
+        cardNumber: value
+      }
+    }));
+    const bankNumberError = validateBankNumber(value);
+    setErrors(prev => ({ ...prev, bankNumber: bankNumberError }));
+  };
+  
+  const handleExpiryDateChange = (e) => {
+    const value = e.target.value;
+    setUser(prev => ({
+      ...prev,
+      bankDetails: {
+        ...prev.bankDetails,
+        expiryDate: value
+      }
+    }));
+    const expiryDateError = validateExpiryDate(value);
+    setErrors(prev => ({ ...prev, expiryDate: expiryDateError }));
+  };
+  
+  const handleCvvChange = (e) => {
+    const value = e.target.value;
+    setUser(prev => ({
+      ...prev,
+      bankDetails: {
+        ...prev.bankDetails,
+        cvc: value
+      }
+    }));
+    const cvvError = validateCVV(value);
+    setErrors(prev => ({ ...prev, cvv: cvvError }));
+  };
+
   return (
     <div className="min-h-screen p-6 dark:bg-[#f5f5f5] text-white bg-[#181821] dark:bg-[#f5f5f5] text-white dark:text-black relative">
       <div className="tabs tabs-boxed mb-10 shadow-custom-dark dark:shadow-custom-light">
@@ -165,8 +222,8 @@ const Profile = () => {
       {activeTab === 'profile' && (
         <div className="profile-info">
           <img src={user.avatar || '/assets/avatar.jpg'} alt="Avatar" className="w-24 h-24 rounded-full mb-4" />
-          <h2 className="text-xl mb-2">Username: {user.username}</h2>
-            <p>Email: {user.email}</p>
+          <h2 className="text-xl mb-2">{user.username}</h2>
+            <p>{user.email}</p>
             {user.bankDetails && (
             <div className="mt-4">
             <h3 className="text-lg mb-2">Bank Details:</h3>
@@ -270,6 +327,23 @@ const Profile = () => {
             />
           </div>
           <div>
+            <label className="block text-gray-400 mb-2 text-white dark:text-black relative">Change email</label>
+            <input
+              type="email"
+              value={user.email}
+              onChange={(e) =>
+                setUser((prev) => {
+                  const updatedUser = { ...prev, email: e.target.value };
+                  localStorage.setItem('user', JSON.stringify(updatedUser));
+                  return updatedUser;
+                })
+              }
+              className="w-full bg-[#14141c] text-gray-400 rounded-lg px-4 py-3 bg-[#181822] dark:bg-[#f5f5f5] text-white dark:text-black relative shadow dark:shadow-lg transition-shadow"
+              placeholder="New email"
+            />
+            
+          </div>
+          <div>
             <label className="block text-gray-400 mb-2 text-white dark:text-black relative">Upload avatar</label>
             <input 
             type="file" 
@@ -284,21 +358,30 @@ const Profile = () => {
             value={user.bankDetails?.cardNumber || ''} 
             onChange={handleBankDetailsChange} 
             className="w-1/3 bg-[#14141c] text-gray-400 rounded-lg px-4 py-3 bg-[#181822] dark:bg-[#f5f5f5] text-white dark:text-black relative shadow dark:shadow-lg transition-shadow" 
-            placeholder="Card Number" />
+            placeholder="Card Number" 
+          />
+
           <input 
             type="text" 
             name="expiryDate" 
             value={user.bankDetails?.expiryDate || ''} 
             onChange={handleBankDetailsChange} 
             className="w-1/4 bg-[#14141c] text-gray-400 rounded-lg px-4 py-3 ml-5 bg-[#181822] dark:bg-[#f5f5f5] text-white dark:text-black relative shadow dark:shadow-lg transition-shadow" 
-            placeholder="MM/YY" />
+            placeholder="MM/YY" 
+          />
+          {errors.expiryDate && <span className="text-red-500 text-sm">{errors.expiryDate}</span>}
+
           <input 
             type="text" 
             name="cvc" 
             value={user.bankDetails?.cvc || ''} 
             onChange={handleBankDetailsChange} 
             className="w-1/4 bg-[#14141c] text-gray-400 rounded-lg px-4 py-3 ml-5 bg-[#181822] dark:bg-[#f5f5f5] text-white dark:text-black relative shadow dark:shadow-lg transition-shadow" 
-            placeholder="CVC" /> </div>
+            placeholder="CVC" 
+            />
+          {errors.cvv && <span className="text-red-500 text-sm">{errors.cvv}</span>}  
+
+          </div>
           <button onClick={handleSaveChanges} className="btn btn-success mt-6 rounded-full bg-[#00df9a] text-white dark:text-white relative">Save changes</button>
           <button onClick={handleLogout} className="btn btn-error mt-6 w-20 rounded-full ml-10 text-white dark:text-white relative">
             Exit

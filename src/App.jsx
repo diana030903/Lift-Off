@@ -8,10 +8,22 @@ import Projects from "./pages/Projects";
 import Home from "./pages/Home";
 import SignUp from "./pages/SignUp";
 import Profile from "./pages/Profile";
+import Favorites from "./pages/Favorites";
+import { projects } from "./data";
 
 const App = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
+const [favorites, setFavorites] = useState([]);
+const toggleFavorite = (id) => {
+  setFavorites(prev => {
+    const newFavorites = prev.includes(id) 
+      ? prev.filter(fav => fav !== id)
+      : [...prev, id];
+    localStorage.setItem('favorites', JSON.stringify(newFavorites));
+    return newFavorites;
+  });
+};
   useEffect(() => {
     const theme = localStorage.getItem("theme");
     if (theme === "dark") {
@@ -34,6 +46,13 @@ const App = () => {
             <Route path="/projects" element={<Projects />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/favorite" element={
+               <Favorites 
+                  favorites={favorites} 
+                  projects={projects} 
+                  toggleFavorite={toggleFavorite} 
+               />
+              } />
           </Routes>
         </div>
       </div>

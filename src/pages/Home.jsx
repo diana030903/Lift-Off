@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { projects } from "../data";
 import ProjectCard from "../components/ProjectCard";
+import Favorites from "../pages/Favorites";
 
 const calculateStats = (projects) => {
   const totalDonations = projects.reduce((sum, project) => {
@@ -20,17 +21,58 @@ const calculateStats = (projects) => {
 };
 
 const Home = ({ searchQuery }) => {
-  const { totalProjects, totalDonations, goalsAchieved } = calculateStats(projects);
+  const [projectsData, setProjectsData] = useState(projects);
   const [filteredProjects, setFilteredProjects] = useState(projects);
+  const [totalStats, setTotalStats] = useState(calculateStats(projects));
+  const [favorites, setFavorites] = useState([]);
+
+  const { totalProjects, totalDonations, goalsAchieved } = totalStats;
+
+  const handleDonate = (projectId) => {
+    const updatedProjects = projectsData.map((project) => {
+      if (project.id === projectId) {
+        const updatedRaised = (parseFloat(project.raised.replace('$', '').replace(',', '')) + 1)
+          .toFixed(2) 
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ','); 
+  
+        const updatedProject = { 
+          ...project, 
+          raised: `$${updatedRaised}` 
+        };
+        return updatedProject;
+      }
+      return project;
+    });
+  
+    setProjectsData(updatedProjects);
+    setTotalStats(calculateStats(updatedProjects)); 
+  };
+
+  const toggleFavorite = (id) => {
+    setFavorites(prev => {
+      const newFavorites = prev.includes(id) 
+        ? prev.filter(fav => fav !== id)
+        : [...prev, id];
+      localStorage.setItem('favorites', JSON.stringify(newFavorites));
+      return newFavorites;
+    });
+  };
 
   useEffect(() => {
-    const filtered = projects.filter((project) =>
+  const savedFavorites = localStorage.getItem('favorites');
+  if (savedFavorites) {
+    setFavorites(JSON.parse(savedFavorites));
+  }
+}, []);
+
+  useEffect(() => {
+    const filtered = projectsData.filter((project) =>
       (project.name && project.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
       (project.category && project.category.toLowerCase().includes(searchQuery.toLowerCase())) ||
       (project.author && project.author.toLowerCase().includes(searchQuery.toLowerCase()))
     );
     setFilteredProjects(filtered);
-  }, [searchQuery, projects]);
+  }, [searchQuery, projectsData]);  
 
   return (
     <div className="min-h-screen dark:bg-[#f5f5f5]">
@@ -65,12 +107,19 @@ const Home = ({ searchQuery }) => {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 ml-12">
         {filteredProjects.length > 0 ? (
           filteredProjects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
+            <ProjectCard 
+              key={project.id} 
+              project={project} 
+              onDonate={handleDonate}
+              toggleFavorite={toggleFavorite}
+              isFavorite={favorites.includes(project.id)}
+            />
           ))
         ) : (
           <p className="text-white">No projects found matching your search.</p>
         )}
       </div>
+      <Favorites favorites={favorites} projects={projects} toggleFavorite={toggleFavorite} />
     </div>
   );
 };

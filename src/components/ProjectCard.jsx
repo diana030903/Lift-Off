@@ -1,14 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 
-const ProjectCard = ({ project }) => {
+const ProjectCard = ({ project, onDonate, toggleFavorite, isFavorite }) => {
+  const [donated, setDonated] = useState(false);
+
+  const handleDonate = () => {
+    setDonated(true);
+    onDonate(project.id);
+  };
+
   return (
-    <div className="card bg-base-100 w-96 shadow-xl">
+    <div className="card bg-base-100 w-96 shadow-2xl">
       <figure className="relative">
         <img 
-        src={project.image} 
-        alt={project.title} 
-        className="w-full h-48 object-cover"
-      />
+          src={project.image} 
+          alt={project.title} 
+          className="w-full h-48 object-cover"
+        />
       </figure>
       <div className="card-body">
         <h2 className="card-title">{project.name}</h2>
@@ -25,7 +32,19 @@ const ProjectCard = ({ project }) => {
           <span className="text-sm text-gray-400">Author: {project.author}</span>
         </div>
         <div className="card-actions justify-end mt-4">
-          <button className="btn btn-primary">Donate</button>
+          <button 
+            className={`btn ${donated ? 'btn-secondary' : 'btn-primary'}`}
+            onClick={handleDonate}
+            disabled={donated}
+          >
+            {donated ? "Thanks for your donation!" : "Donate $1"}
+          </button>
+          <button
+          className={`absolute top-2 right-2 p-2 rounded-full ${isFavorite ? "bg-red-500" : "bg-green-500"}`}
+          onClick={() => toggleFavorite(project.id)}
+          >
+            {isFavorite ? "♥" : "♡"}
+          </button>
         </div>
       </div>
     </div>
